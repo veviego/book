@@ -1,6 +1,7 @@
 package com.codepath.android.booksearch.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.android.booksearch.R;
+import com.codepath.android.booksearch.activities.BookDetailActivity;
 import com.codepath.android.booksearch.models.Book;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,30 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             ivCover = (ImageView)itemView.findViewById(R.id.ivBookCover);
             tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
             tvAuthor = (TextView)itemView.findViewById(R.id.tvAuthor);
+
+            // Attach a click listener to the entire row view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // gets item position
+                    int position = getAdapterPosition();
+                    // make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the book at the position
+                        Book book = mBooks.get(position);
+                        // create intent for the new activity
+                        Intent intent = new Intent (mContext, BookDetailActivity.class);
+
+                        // serialize the book using parceler, use its short name as a key
+                        intent.putExtra(book.getTitle(), Parcels.wrap(book));
+                        intent.putExtra("Book Title", book.getTitle());
+
+                        // show the activity
+                        mContext.startActivity(intent);
+                    }
+
+                }
+            });
         }
     }
 
@@ -53,6 +81,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
         // Return a new holder instance
         BookAdapter.ViewHolder viewHolder = new BookAdapter.ViewHolder(bookView);
+
         return viewHolder;
     }
 

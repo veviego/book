@@ -1,31 +1,56 @@
 package com.codepath.android.booksearch.activities;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.android.booksearch.R;
+import com.codepath.android.booksearch.models.Book;
+
+import org.parceler.Parcels;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView ivBookCover;
     private TextView tvTitle;
     private TextView tvAuthor;
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+        context = this;
+
         // Fetch views
         ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
 
         // Extract book object from intent extras
+        String bookTitle = getIntent().getStringExtra("Book Title");
+        Book book = (Book) Parcels.unwrap(getIntent().getParcelableExtra(bookTitle));
+
+        ActionBar actionBar = getSupportActionBar(); // or getActionBar();
+       actionBar.setTitle(bookTitle); // set the top title
 
         // Use book object to populate data into views
+        tvTitle.setText(book.getTitle());
+        tvAuthor.setText(book.getAuthor());
+
+        //load backdrop image using glide
+        Glide.with(context)
+                .load(book.getCoverUrl())
+                .bitmapTransform(new RoundedCornersTransformation(context, 35, 0))
+                .into(ivBookCover);
     }
 
 

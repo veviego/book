@@ -39,6 +39,8 @@ public class BookListActivity extends AppCompatActivity {
         // initialize the adapter
         bookAdapter = new BookAdapter(this, abooks);
 
+        // random comment
+
         // attach the adapter to the RecyclerView
         rvBooks.setAdapter(bookAdapter);
 

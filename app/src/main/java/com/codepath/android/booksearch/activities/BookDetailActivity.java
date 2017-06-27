@@ -2,8 +2,10 @@ package com.codepath.android.booksearch.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,8 @@ public class BookDetailActivity extends AppCompatActivity {
     private TextView tvAuthor;
 
     Context context;
+    private ShareActionProvider miShareAction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,12 @@ public class BookDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_detail, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        // Fetch reference to the share action provider
+        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
         return true;
     }
 
